@@ -8,10 +8,10 @@
 
 		<link rel="stylesheet" href="dist/reset.css">
 		<link rel="stylesheet" href="dist/reveal.css">
-		<link rel="stylesheet" href="dist/theme/blood.css">
+		<link rel="stylesheet" href="dist/theme/sky.css">
 
 		<!-- Theme used for syntax highlighted code -->
-		<link rel="stylesheet" href="plugin/highlight/monokai.css">
+		<link rel="stylesheet" href="plugin/highlight/a11y-light.css">
 
 		<style>
 			.reveal h1,
@@ -28,6 +28,16 @@
 				/*display: block;*/
 				text-align: left;
 			}
+
+			.hidden {
+				visibility: hidden;
+			}
+
+			.figure img {
+				display: block;
+				margin: 0 auto;
+			}
+
 		</style>
 	</head>
 	<body>
@@ -140,13 +150,19 @@
 				<section>
 					<section class="left">
 						<h2 class="r-fit-text">Multiple App Servers,<br/>Multiple Databases</h2>
+						<div class="figure">
+							<img src="figures/fig-multi-multidb.svg" />
+						</div>
+					</section>
+					<section>
+						<h2 class="r-fit-text">Multiple App Servers,<br/>Multiple Databases</h2>
 						<div>
 							<ul>
-								<li>✅ Code Simplicity</li>
-								<li>✅ Best Possible Isolation</li>
-								<li>❌ Scalability</li>
-								<li>❌ Cross-Tenancy Queries</li>
-								<li>❌ Administration, Deployment </li>
+								<li><span class="fragment fade-in">✅</span> Code Simplicity</li>
+								<li><span class="fragment fade-in">✅</span> Isolation</li>
+								<li><span class="fragment fade-in">❌</span> Scalability</li>
+								<li><span class="fragment fade-in">❌</span> Cross-Tenancy Queries</li>
+								<li><span class="fragment fade-in">❌</span> Administration, Deployment</li>
 							</ul>
 						</div>
 
@@ -178,14 +194,19 @@
 				<section>
 					<section class="left">
 						<h2 class="r-fit-text">Single App Server,<br/>Multiple Databases</h2>
+						<div class="figure">
+							<img src="figures/fig-single-multidb.svg" />
+						</div>
+					</section>
+					<section class="left">
+						<h2 class="r-fit-text">Single App Server,<br/>Multiple Databases</h2>
 						<div>
 							<ul>
-								<li>Implement with middleware changing DB routing</li>
-								<li>✅ Code Simplicity</li>
-								<li>✅ Good Isolation </li>
-								<li>❌ Scalability</li>
-								<li>❌ Cross-Tenancy Queries</li>
-								<li>❌ Administration, Deployment </li>
+								<li><span class="fragment fade-in">✅</span> Code Simplicity</li>
+								<li><span class="fragment fade-in">✅</span> Good Isolation </li>
+								<li><span class="fragment fade-in">❌</span> Scalability</li>
+								<li><span class="fragment fade-in">❌</span> Cross-Tenancy Queries</li>
+								<li><span class="fragment fade-in">❌</span> Administration, Deployment</li>
 							</ul>
 						</div>
 
@@ -197,18 +218,27 @@
 						</aside>
 
 					</section>
+				</section>
+
+				<section>
+					<section class="left">
+						<h2 class="r-fit-text">Single App Server,<br/>Multiple <strike>Databases</strike> Schemas</h2>
+						<div class="figure">
+							<img src="figures/fig-single-multischema.svg" />
+						</div>
+					</section>
 
 					<section class="left">
 						<h2 class="r-fit-text">Single App Server,<br/>Multiple <strike>Databases</strike> Schemas</h2>
-						<p>Schema: namespace for postgres databases</p>
 						<div>
 							<ul>
-								<li><code>django-tenants</code></li>
-								<li>✅ Code Simplicity</li>
-								<li>✅ Good Isolation</li>
-								<li>Scalability</li>
-								<li>Cross-Tenancy Queries</li>
+								<li><span class="fragment fade-in">✅</span> Code Simplicity</li>
+								<li><span class="fragment fade-in">✅</span> Isolation </li>
+								<li><span class="fragment fade-in">*️⃣</span> Scalability</li>
+								<li><span class="fragment fade-in">*️⃣</span> Cross-Tenancy Queries</li>
+								<li><span class="fragment fade-in">*️⃣</span> Administration, Deployment</li>
 								<li>⚠️ Transaction limits, connection pooling</li>
+								<li><code>django-tenants</code></li>
 							</ul>
 						</div>
 
@@ -233,6 +263,7 @@
 										(eg pgbouncer has some limitations, SET vs SET LOCAL -- which then requires a transaction to be active)
 										- https://www.pgbouncer.org/features.html#fnref:2
 
+							- table inheritance seems useful at first until you find the part where foreign keys & unique constraints don't work
 						</aside>
 
 					</section>
@@ -242,7 +273,14 @@
 				<section>
 
 					<section class="left">
-						<h2 class="r-fit-text">Single App Server,<br/> Single Database</h2>
+						<h2 class="r-fit-text">Single App Server,<br/>Shared Tables</h2>
+						<div class="figure">
+							<img src="figures/fig-single-shared.svg" />
+						</div>
+					</section>
+
+					<section class="left">
+						<h2 class="r-fit-text">Single App Server,<br/>Shared Tables</h2>
 						<div>
 							<ul>
 								<li>Django Managers</li>
@@ -266,10 +304,11 @@
 						<h2 class="r-fit-text">Single App Server,<br/> Single Database</h2>
 						<div>
 							<ul>
-								<li>❌ Code Simplicity</li>
-								<li>Isolation</li>
-								<li>✅ Scalability</li>
-								<li>✅ Cross-Tenancy Queries</li>
+								<li><span class="fragment fade-in">❌</span> Code Simplicity</li>
+								<li><span class="fragment fade-in">*️⃣</span> Isolation</li>
+								<li><span class="fragment fade-in">✅</span> Scalability</li>
+								<li><span class="fragment fade-in">✅</span> Cross-Tenancy Queries</li>
+								<li><span class="fragment fade-in">✅</span> Administration, Deployment</li>
 							</ul>
 						</div>
 
@@ -291,29 +330,43 @@
 				<!-- =============================================================== -->
 				<section>
 
-					<section class="left">
+					<section class="left" data-transition="fade-out">
 						<h2 class="r-fit-text">Custom Model Managers</h2>
-						<p>Standardised Tenancy Filter</p>
-						<pre>
-							<code data-trim data-noescape class="language-python">
-								class ProjectQuerySet(QuerySet):
-									def filter_tenant(queryset, account):
-										return self.queryset.filter(account=account)
 
-								class Project(Model):
-									objects = Manager.from_queryset(ProjectQuerySet)()
-							</code>
-						</pre>
-						<div class="fragment fade-in">
+						<div class="figure">
+							<img src="figures/fig-er-diagram.svg" />
+						</div>
 
+						<div>
 							<pre>
 								<code data-trim data-noescape class="language-python">
-									# traversing multiple models:
+									class ProjectQuerySet(QuerySet):
+										def filter_tenant(queryset, account):
+											return self.queryset.filter(account=account)
+
+									class Project(Model):
+										objects = Manager.from_queryset(ProjectQuerySet)()
+								</code>
+							</pre>
+						</div>
+					</section>
+
+					<section class="left" data-transition="fade-in slide-out">
+						<h2 class="r-fit-text">Custom Model Managers</h2>
+
+						<div class="figure">
+							<img src="figures/fig-er-diagram.svg" />
+						</div>
+
+						<div>
+							<pre>
+								<code data-trim data-noescape class="language-python">
 									class SubtaskQuerySet(QuerySet):
 										def filter_tenant(queryset, account):
 											return self.queryset.filter(task__project__account=account)
 
-									...
+									class Subtask(Model):
+										objects = Manager.from_queryset(SubtaskQuerySet)()
 								</code>
 							</pre>
 						</div>
@@ -336,9 +389,9 @@
 					<section class="left">
 						<h2 class="r-fit-text">Custom Model Managers</h2>
 						<ul>
-							<li>❌ Non-ORM queries</li>
-							<li>⚠️ May alter aggregate queries</li>
-							<li>⚠️ FK Leakage</li>
+							<li>⚠️ Non-ORM queries</li>
+							<li>⚠️ Aggregate queries</li>
+							<li>⚠️️ FK Leakage:</li>
 							<pre>
 								<code data-trim data-noescape class="language-python">
 									user.country.user_set
@@ -366,20 +419,20 @@
 
 					<section class="left">
 						<h2 class="r-fit-text">Mandatory Tenant Filtering</h2>
-						<p>Remember whether <code>filter_tenant</code> was called</p>
 						<ul>
-							<li>Log a warning / Raise an exception</li>
-							<li><code>_base_manager</code> vs <code>_default_manager</code></li>
+							<li>Remember whether <code>filter_tenant</code> was called</li>
+							<li>Log a warning or Raise an exception</li>
+							<li>️️⚠️️ <code>_base_manager</code> vs <code>_default_manager</code></li>
 						</ul>
 
 						<pre>
 							<code data-trim data-noescape class="language-python">
 								class Project(Model):
 									objects = ProjectManager(require_filter_tenant=True)
-									unfiltered = ProjectManager(require_filter_tenant=False)
+									all_tenants = ProjectManager(require_filter_tenant=False)
 
 									class Meta:
-										base_manager_name = "unfiltered"
+										base_manager_name = "all_tenants"
 							</code>
 						</pre>
 
@@ -398,18 +451,31 @@
 
 				<!-- =============================================================== -->
 				<section>
+					<section class="left" data-transition="fade-out">
+						<h2 class="r-fit-text">Tenancy Denormalisation</h2>
+						<div class="figure">
+							<img src="figures/fig-er-diagram-pk.svg" />
+						</div>
+					</section>
+
+					<section class="left" data-transition="fade-in slide-out">
+						<h2 class="r-fit-text">Tenancy Denormalisation</h2>
+						<div class="figure">
+							<img src="figures/fig-er-diagram-pk-denorm.svg" />
+						</div>
+					</section>
+
 
 					<section class="left">
 						<h2 class="r-fit-text">Tenancy Denormalisation</h2>
-						<p>Denormalise the tenant ID into every table</p>
 						<ul>
-							<li>✅ Code Simplicity</li>
-							<li>Isolation </li>
-							<li>✅ Scalability</li>
-							<li>✅ Cross-Tenancy Queries</li>
-							<li>✅ Administration, Deployment </li>
-							<li>❌ Harder to move data between tenants</li>
-							<li>Standard denormalisation caveats; esp write limits</li>
+							<li><span class="fragment fade-in">*️⃣</span> Code Simplicity</li>
+							<li><span class="fragment fade-in">*️⃣</span> Isolation</li>
+							<li><span class="fragment fade-in">✅</span> Scalability</li>
+							<li><span class="fragment fade-in">✅</span> Cross-Tenancy Queries</li>
+							<li><span class="fragment fade-in">✅</span> Administration, Deployment</li>
+							<li>⚠️️ Harder to move data between tenants</li>
+							<li>Standard denormalisation caveats</li>
 							<li><code>django-multitenant</code></li>
 						</ul>
 
@@ -450,10 +516,9 @@
 
 					<section class="left">
 						<h2 class="r-fit-text">Postgres Users,<br />Row-level Security</h2>
-						<p>Assumes tenant ID denormalised</p>
 						<ul>
-							<li>Create a new postgres role for each </li>
-							<li>Performance impact (TODO: re-test with more recent versions)</li>
+							<li>Create a new postgres role for each tenancy</li>
+							<li>Potential performance impact (TODO: re-test with more recent versions)</li>
 						</ul>
 
 						<aside class="notes">

@@ -1,0 +1,17 @@
+https://policyviz.com/2023/05/31/why-are-six-colors-common-in-color-palettes-for-data-visualization/
+
+#41afaa
+#366eb4
+#00a0e1
+#e6a532
+#d7642c
+#af4b91
+
+
+#000000
+#777777
+#cccccc
+#ffffff
+
+
+

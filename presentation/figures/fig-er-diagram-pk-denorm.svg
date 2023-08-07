@@ -1,0 +1,475 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="270mm"
+   height="80mm"
+   viewBox="0 0 270 80.000002"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.3 (0e150ed, 2023-07-21)"
+   sodipodi:docname="fig-er-diagram-pk-denorm.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showguides="true"
+     inkscape:zoom="1.4142136"
+     inkscape:cx="465.27625"
+     inkscape:cy="172.53405"
+     inkscape:window-width="2352"
+     inkscape:window-height="1167"
+     inkscape:window-x="104"
+     inkscape:window-y="25"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="g7-7"
+     showgrid="false">
+    <sodipodi:guide
+       position="72.000007,85.752561"
+       orientation="-1,0"
+       id="guide7"
+       inkscape:locked="false"
+       inkscape:label=""
+       inkscape:color="rgb(0,134,229)" />
+    <sodipodi:guide
+       position="144,86.410871"
+       orientation="-1,0"
+       id="guide8"
+       inkscape:locked="false"
+       inkscape:label=""
+       inkscape:color="rgb(0,134,229)" />
+    <sodipodi:guide
+       position="216.00001,76.659101"
+       orientation="-1,0"
+       id="guide9"
+       inkscape:locked="false"
+       inkscape:label=""
+       inkscape:color="rgb(0,134,229)" />
+  </sodipodi:namedview>
+  <defs
+     id="defs1">
+    <marker
+       style="overflow:visible"
+       id="ArrowWideRounded"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="Wide, rounded arrow"
+       markerWidth="1"
+       markerHeight="1"
+       viewBox="0 0 1 1"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         style="fill:none;stroke:black;stroke-width:1;stroke-linecap:round"
+         d="M 3,-3 0,0 3,3"
+         transform="rotate(180,0.125,0)"
+         sodipodi:nodetypes="ccc"
+         id="path2" />
+    </marker>
+    <rect
+       x="100.76765"
+       y="215.2198"
+       width="571.01672"
+       height="335.89218"
+       id="rect5" />
+    <rect
+       x="146.79732"
+       y="261.24948"
+       width="481.44547"
+       height="279.91016"
+       id="rect4" />
+    <marker
+       style="overflow:visible"
+       id="ArrowWideRounded-4"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="Wide, rounded arrow"
+       markerWidth="1"
+       markerHeight="1"
+       viewBox="0 0 1 1"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         style="fill:none;stroke:black;stroke-width:1;stroke-linecap:round"
+         d="M 3,-3 0,0 3,3"
+         transform="rotate(180,0.125,0)"
+         sodipodi:nodetypes="ccc"
+         id="path2-0" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="ArrowWideRounded-4-5"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="Wide, rounded arrow"
+       markerWidth="1"
+       markerHeight="1"
+       viewBox="0 0 1 1"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         style="fill:none;stroke:black;stroke-width:1;stroke-linecap:round"
+         d="M 3,-3 0,0 3,3"
+         transform="rotate(180,0.125,0)"
+         sodipodi:nodetypes="ccc"
+         id="path2-0-6" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="ArrowWideRounded-6"
+       refX="0"
+       refY="0"
+       orient="auto-start-reverse"
+       inkscape:stockid="Wide, rounded arrow"
+       markerWidth="1"
+       markerHeight="1"
+       viewBox="0 0 1 1"
+       inkscape:isstock="true"
+       inkscape:collect="always"
+       preserveAspectRatio="xMidYMid">
+      <path
+         style="fill:none;stroke:black;stroke-width:1;stroke-linecap:round"
+         d="M 3,-3 0,0 3,3"
+         transform="rotate(180,0.125,0)"
+         sodipodi:nodetypes="ccc"
+         id="path2-9" />
+    </marker>
+  </defs>
+  <g
+     inkscape:groupmode="layer"
+     id="layer3"
+     inkscape:label="arrows"
+     style="display:none">
+    <path
+       style="display:inline;fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#ArrowWideRounded-6)"
+       d="M 46.183636,86.828714 46.096618,69.788343"
+       id="path7-4"
+       sodipodi:nodetypes="cc"
+       transform="translate(-19.1107,-46.83125)"
+       inkscape:label="user-account" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#ArrowWideRounded-4-5)"
+       d="M 235.61083,57.331249 H 218.06781"
+       id="path7-6-2"
+       sodipodi:nodetypes="cc"
+       transform="translate(-19.1107,-46.83125)"
+       inkscape:label="subtask-task" />
+    <path
+       style="display:inline;fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#ArrowWideRounded-4)"
+       d="M 163.61083,57.331249 H 146.06781"
+       id="path7-6"
+       sodipodi:nodetypes="cc"
+       transform="translate(-19.1107,-46.83125)"
+       inkscape:label="task-project" />
+    <path
+       style="display:inline;fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#ArrowWideRounded)"
+       d="M 72.500005,10.999997 H 54.956981"
+       id="path7"
+       sodipodi:nodetypes="cc"
+       inkscape:label="project-account" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="g12"
+     inkscape:label="arrows copy"
+     style="display:inline">
+    <path
+       style="display:inline;fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#ArrowWideRounded-6)"
+       d="M 27.061808,50.495438 26.974788,30.957066"
+       id="path9"
+       sodipodi:nodetypes="cc"
+       inkscape:label="user-account" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#ArrowWideRounded-4-5)"
+       d="M 235.61083,57.331249 H 218.06781"
+       id="path10"
+       sodipodi:nodetypes="cc"
+       transform="translate(-19.1107,-46.83125)"
+       inkscape:label="subtask-task" />
+    <path
+       style="display:inline;fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#ArrowWideRounded-4)"
+       d="M 163.61083,57.331249 H 146.06781"
+       id="path11"
+       sodipodi:nodetypes="cc"
+       transform="translate(-19.1107,-46.83125)"
+       inkscape:label="task-project" />
+    <path
+       style="display:inline;fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#ArrowWideRounded)"
+       d="M 72.500005,10.999997 H 54.956981"
+       id="path12"
+       sodipodi:nodetypes="cc"
+       inkscape:label="project-account" />
+  </g>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-19.110695,-46.831251)">
+    <g
+       id="g6-9"
+       transform="translate(-73.398928,49.074859)"
+       inkscape:label="user">
+      <path
+         style="opacity:0.99;fill:none;stroke:none;stroke-width:2.81591;stroke-linecap:round"
+         sodipodi:type="inkscape:offset"
+         inkscape:radius="-4.2789969"
+         inkscape:original="M 92.990234 48.236328 L 92.990234 77.275391 L 146.0293 77.275391 L 146.0293 48.236328 L 92.990234 48.236328 z "
+         xlink:href="#rect1-1-2"
+         id="path5-4-0"
+         inkscape:href="#rect1-1-2"
+         d="M 97.269531,52.515625 V 72.996094 H 141.75 V 52.515625 Z"
+         transform="translate(0,-0.92514089)" />
+      <rect
+         style="opacity:0.99;fill:#ffffff;stroke:#000000;stroke-width:0.961421;stroke-linecap:round"
+         id="rect1-1-2"
+         width="53.038578"
+         height="29.038578"
+         x="92.990334"
+         y="48.237103" />
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.29167px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+         x="95.349426"
+         y="66.776825"
+         id="text1-4-3-4-0"><tspan
+           sodipodi:role="line"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.29167px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583"
+           x="95.349426"
+           y="66.776825"
+           id="tspan6">id (PK)</tspan><tspan
+           sodipodi:role="line"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.29167px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583"
+           x="95.349426"
+           y="73.391411"
+           id="tspan5-6-7-2">account_id (FK)</tspan></text>
+      <text
+         xml:space="preserve"
+         id="text5-7-7"
+         style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#path5-4-0);display:inline;fill:#000000;fill-opacity:1;stroke:none"
+         transform="translate(-2.6797458,-1.7943186)"><tspan
+           x="97.269531"
+           y="61.245309"
+           id="tspan3">User</tspan></text>
+    </g>
+    <g
+       id="g7-7"
+       transform="translate(72.127361,-3.1749984)"
+       inkscape:label="subtask">
+      <path
+         style="opacity:0.99;fill:none;stroke:none;stroke-width:2.81591;stroke-linecap:round"
+         sodipodi:type="inkscape:offset"
+         inkscape:radius="-4.2789969"
+         inkscape:original="M 163.46484 50.486328 L 163.46484 86.525391 L 216.50195 86.525391 L 216.50195 50.486328 L 163.46484 50.486328 z "
+         xlink:href="#rect1-1-0-0"
+         id="path5-4-4-1"
+         inkscape:href="#rect1-1-0-0"
+         d="m 167.74414,54.765625 v 20.480469 h 44.47852 V 54.765625 Z" />
+      <rect
+         style="opacity:0.99;fill:#ffffff;stroke:#000000;stroke-width:0.961423;stroke-linecap:round"
+         id="rect1-1-0-0"
+         width="53.038578"
+         height="36.038578"
+         x="163.46405"
+         y="50.486965" />
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.29167px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+         x="165.82314"
+         y="70.02668"
+         id="text1-4-3-4"><tspan
+           sodipodi:role="line"
+           id="tspan1-6-9-3"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.29167px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583"
+           x="165.82314"
+           y="70.02668">id (PK)</tspan><tspan
+           sodipodi:role="line"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.29167px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583"
+           x="165.82314"
+           y="76.641266"
+           id="tspan5-6-7">task_id (FK)</tspan><tspan
+           sodipodi:role="line"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.29167px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583"
+           x="165.82314"
+           y="83.255852"
+           id="tspan15">account_id (FK)</tspan><tspan
+           sodipodi:role="line"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.29167px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583"
+           x="165.82314"
+           y="89.870445"
+           id="tspan16" /></text>
+      <text
+         xml:space="preserve"
+         id="text5-7-5-9"
+         style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#path5-4-4-1);display:inline;fill:#000000;fill-opacity:1;stroke:none"
+         transform="translate(-2.4532686,-2.3740134)"><tspan
+           x="167.74414"
+           y="64.42109"
+           id="tspan4">Subtask</tspan></text>
+    </g>
+    <g
+       id="g7"
+       transform="translate(0.12736072,-3.1749992)"
+       inkscape:label="task">
+      <path
+         style="opacity:0.99;fill:none;stroke:none;stroke-width:2.81591;stroke-linecap:round"
+         sodipodi:type="inkscape:offset"
+         inkscape:radius="-4.2789969"
+         inkscape:original="M 163.46484 50.486328 L 163.46484 86.525391 L 216.50195 86.525391 L 216.50195 50.486328 L 163.46484 50.486328 z "
+         xlink:href="#rect1-1-0"
+         id="path5-4-4"
+         inkscape:href="#rect1-1-0"
+         d="m 167.74414,54.765625 v 20.480469 h 44.47852 V 54.765625 Z" />
+      <rect
+         style="opacity:0.99;fill:#ffffff;stroke:#000000;stroke-width:0.961422;stroke-linecap:round"
+         id="rect1-1-0"
+         width="53.038578"
+         height="36.038578"
+         x="163.46405"
+         y="50.486961" />
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.29167px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+         x="166.47948"
+         y="66.851677"
+         id="text1-4-3"
+         transform="translate(-0.12736061,3.1750002)"><tspan
+           sodipodi:role="line"
+           id="tspan1-6-9"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.29167px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583"
+           x="166.47948"
+           y="66.851677">id (PK)</tspan><tspan
+           sodipodi:role="line"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.29167px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583"
+           x="166.47948"
+           y="73.466263"
+           id="tspan9">project_id (FK)</tspan><tspan
+           sodipodi:role="line"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.29167px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583"
+           x="166.47948"
+           y="80.080849"
+           id="tspan7">account_id (FK)</tspan><tspan
+           sodipodi:role="line"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.29167px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583"
+           x="166.47948"
+           y="86.695442"
+           id="tspan8" /></text>
+      <text
+         xml:space="preserve"
+         id="text5-7-5"
+         style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#path5-4-4);display:inline;fill:#000000;fill-opacity:1;stroke:none"
+         transform="translate(-1.7608063,-2.3740126)"><tspan
+           x="167.74414"
+           y="64.42109"
+           id="tspan10">Task</tspan></text>
+    </g>
+    <g
+       id="g6"
+       transform="translate(-1.3989224)"
+       inkscape:label="project">
+      <path
+         style="opacity:0.99;fill:none;stroke:none;stroke-width:2.81591;stroke-linecap:round"
+         sodipodi:type="inkscape:offset"
+         inkscape:radius="-4.2789969"
+         inkscape:original="M 92.990234 47.3125 L 92.990234 76.349609 L 146.0293 76.349609 L 146.0293 47.3125 L 92.990234 47.3125 z "
+         xlink:href="#rect1-1"
+         id="path5-4"
+         inkscape:href="#rect1-1"
+         d="M 97.269531,51.591797 V 72.070312 H 141.75 V 51.591797 Z" />
+      <rect
+         style="opacity:0.99;fill:#ffffff;stroke:#000000;stroke-width:0.961422;stroke-linecap:round"
+         id="rect1-1"
+         width="53.038578"
+         height="29.038578"
+         x="92.990334"
+         y="47.311962" />
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.29167px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+         x="94.147392"
+         y="66.851677"
+         id="text1-4"
+         transform="translate(1.3989225)"><tspan
+           sodipodi:role="line"
+           id="tspan1-6"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.29167px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583"
+           x="94.147392"
+           y="66.851677">id (PK)</tspan><tspan
+           sodipodi:role="line"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.29167px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583"
+           x="94.147392"
+           y="73.466263"
+           id="tspan5">account_id (FK)</tspan></text>
+      <text
+         xml:space="preserve"
+         id="text5-7"
+         style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#path5-4);display:inline;fill:#000000;fill-opacity:1;stroke:none"
+         transform="translate(-2.7934392,-2.6697384)"><tspan
+           x="97.269531"
+           y="61.247262"
+           id="tspan11">Project</tspan></text>
+    </g>
+    <g
+       id="g5"
+       transform="translate(8.5416673e-8,-0.58665898)"
+       inkscape:label="account">
+      <path
+         style="opacity:0.99;fill:none;stroke:none;stroke-width:2.81591;stroke-linecap:round"
+         sodipodi:type="inkscape:offset"
+         inkscape:radius="-4.2789969"
+         inkscape:original="M 19.591797 47.898438 L 19.591797 76.9375 L 72.630859 76.9375 L 72.630859 47.898438 L 19.591797 47.898438 z "
+         xlink:href="#rect1"
+         id="path5"
+         inkscape:href="#rect1"
+         d="M 23.871094,52.177734 V 72.658203 H 68.351562 V 52.177734 Z" />
+      <rect
+         style="opacity:0.99;fill:#ffffff;stroke:#000000;stroke-width:0.961422;stroke-linecap:round"
+         id="rect1"
+         width="53.038578"
+         height="29.038578"
+         x="19.591412"
+         y="47.898621" />
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.29167px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+         x="21.658525"
+         y="66.851677"
+         id="text1"
+         transform="translate(2.7083331e-8,0.58665998)"><tspan
+           sodipodi:role="line"
+           id="tspan1"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.29167px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583"
+           x="21.658525"
+           y="66.851677">id (PK)</tspan><tspan
+           sodipodi:role="line"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.29167px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke-width:0.264583"
+           x="21.658525"
+           y="73.466263"
+           id="tspan2" /></text>
+      <text
+         xml:space="preserve"
+         id="text5"
+         style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;white-space:pre;shape-inside:url(#path5);display:inline;fill:#000000;fill-opacity:1;stroke:none"
+         transform="translate(-1.8947571,-2.7206932)"><tspan
+           x="23.871094"
+           y="61.833199"
+           id="tspan12">Account </tspan></text>
+    </g>
+  </g>
+</svg>

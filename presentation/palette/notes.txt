@@ -1,0 +1,8 @@
+https://www.oreilly.com/library/view/the-big-book/9781119282716/c33.xhtml
+
+Gimp palette:
+https://gist.github.com/Tabea-K/cdf7ef7d324798edd92e187033c2aec7
+
+
+Inkscape color blind filter:
+https://answers.launchpad.net/inkscape/+question/656266
