@@ -33,3 +33,12 @@ pip install --upgrade pip
 pip install -r requirements.txt
 
 ```
+
+### Create sample test data
+```bash
+./manage.py createtestdata
+```
+
+- For options see `--help`
+  - Notably you can use the `--account` param to generate more/less data
+  - Takes ~5m30s to generate 2,000 accounts (~30k projects, ~150k tasks, ~750k subtasks)

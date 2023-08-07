@@ -15,6 +15,7 @@ from django.db.models import TextField
 class Account(Model):
     id = AutoField(primary_key=True)
     slug = CharField(max_length=255, unique=True)
+    name = CharField(max_length=255)
 
     class Meta:
         abstract = True
@@ -33,7 +34,6 @@ class User(AbstractUser):
     is_staff = None
     groups = None
     user_permissions = None
-
 
     class Meta:
         abstract = True
