@@ -41,4 +41,4 @@ pip install -r requirements.txt
 
 - For options see `--help`
   - Notably you can use the `--account` param to generate more/less data
-  - Takes ~5m30s to generate 2,000 accounts (~30k projects, ~150k tasks, ~750k subtasks)
+  - Takes ~9m to generate 2,000 accounts (~30k projects, ~150k tasks, ~750k subtasks)

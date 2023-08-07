@@ -1,0 +1,29 @@
+{% load static %}
+<html>
+	<head>
+		<link rel="stylesheet" href="{%  static "normalize.css" %}" />
+		<style>
+			body { margin: 1em; }
+			* { font-family: "Trebuchet MS", Sans-serif }
+			h1, h2, h3, h4, h5, h6 { font-family: "Verdana", Sans-serif }
+
+			table.data {
+					background-color: #eee;
+			}
+			table.data thead {
+					background-color: #ddd;
+			}
+
+			.paginate {
+					margin-top: 1em;
+					border: 1px solid #8dd;
+					backgroud-color: #cee;
+					padding: 0.5em;
+			}
+		</style>
+		<title>{% block title %}Demonstration Site{% endblock %}</title>
+	</head>
+	<body>
+		{% block content %}{% endblock %}
+	</body>
+</html>

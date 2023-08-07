@@ -39,13 +39,14 @@ def get_env_setting(env_var: str | list[str], default=_NOT_PROVIDED):
 class _Common(Configuration):
     INSTALLED_APPS = [
         "common",
-
         "django.contrib.admin",
         "django.contrib.auth",
         "django.contrib.contenttypes",
         "django.contrib.sessions",
         "django.contrib.messages",
-        # 'django.contrib.staticfiles',
+        "django.contrib.staticfiles",
+        "django_extensions",
+        "django_site",
     ]
 
     MIDDLEWARE = [
@@ -59,6 +60,7 @@ class _Common(Configuration):
     ]
 
     ROOT_URLCONF = "django_site.urls"
+    APPEND_SLASH = True
 
     TEMPLATES = [
         {
@@ -83,11 +85,13 @@ class _Common(Configuration):
     USE_I18N = True
     USE_TZ = True
 
-    # STATIC_URL = 'static/'
+    STATIC_URL = "static/"
 
     # DO NOT EVER USE THIS ON A PRODUCTION SITE
     # This is a VERY weak password hash, but it allows us to create lots of test users extremely quickly
     PASSWORD_HASHERS = ("django.contrib.auth.hashers.UnsaltedSHA1PasswordHasher",)
+
+    SECRET_KEY = get_env_setting("SECRET_KEY")
 
     DEBUG = True
 

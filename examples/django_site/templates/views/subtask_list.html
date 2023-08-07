@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+	<h1>{{ title }}</h1>
+	<table class="data">
+		<thead>
+			<th>Account</th>
+			<th>Project</th>
+			<th>Task</th>
+			<th>Subtask</th>
+			<th>Name</th>
+			<th>Complete?</th>
+			<th>Details</th>
+		</thead>
+		<tbody>
+			{% for obj in object_list %}
+				<tr>
+					<td>{{ obj.task.project.account }}</td>
+					<td>{{ obj.task.project }}</td>
+					<td>{{ obj.task }}</td>
+					<td>{{ obj.id }}</td>
+					<td>{{ obj.name }}</td>
+					<td>{{ obj.is_complete | yesno:"✅,❌" }}</td>
+					<td>{{ obj.details }}</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	{% if is_paginated %}
+		<div class="paginate">
+			<div>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</div>
+			<div>
+				{% for page, link in page_links.items %}
+					{% if page_obj.number == page %}
+						[[ {{ page }} ]]
+					{% else %}
+						<a href="{{ link }}">{{ page }}</a>
+					{% endif %}
+				{% endfor %}
+			</div>
+		</div>
+	{% endif %}
+{% endblock %}

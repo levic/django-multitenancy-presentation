@@ -20,6 +20,9 @@ class Account(Model):
     class Meta:
         abstract = True
 
+    def __str__(self):
+        return f"Account #{self.id}" if self.id else "New Account"
+
 
 class User(AbstractUser):
     id = AutoField(primary_key=True)
@@ -38,6 +41,9 @@ class User(AbstractUser):
     class Meta:
         abstract = True
 
+    def __str__(self):
+        return f"User #{self.id}" if self.id else "New User"
+
 
 class Project(Model):
     id = AutoField(primary_key=True)
@@ -47,6 +53,9 @@ class Project(Model):
 
     class Meta:
         abstract = True
+
+    def __str__(self):
+        return f"Project #{self.id}" if self.id else "New Project"
 
 
 class Task(Model):
@@ -59,6 +68,9 @@ class Task(Model):
     class Meta:
         abstract = True
 
+    def __str__(self):
+        return f"Task #{self.id}" if self.id else "New Task"
+
 
 class Subtask(Model):
     id = AutoField(primary_key=True)
@@ -69,3 +81,6 @@ class Subtask(Model):
 
     class Meta:
         abstract = True
+
+    def __str__(self):
+        return f"Subtask #{self.id}" if self.id else "New Subtask"
