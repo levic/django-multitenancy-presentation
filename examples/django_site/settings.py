@@ -11,7 +11,7 @@ class _NOT_PROVIDED:
     pass
 
 
-def get_env_setting(env_var: str | list[str], default=_NOT_PROVIDED):
+def get_env_setting(env_var: str | list[str], default=_NOT_PROVIDED) -> str:
     """
     Get an environment setting or raise an exception if no default was specified
     :param env_var: enviroment variable or list of environment variables; will return the value of the first found (even if value is empty)
@@ -78,6 +78,17 @@ class _Common(Configuration):
         },
     ]
 
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "HOST": get_env_setting("PGHOST", "localhost"),
+            "NAME": get_env_setting("PGDATABASE"),
+            "PORT": get_env_setting("PGPORT", "5432"),
+            "USER": get_env_setting(["PGUSER", "USER"]),
+            "PASSWORD": get_env_setting("PGPASSWORD", None),
+        },
+    }
+
     # WSGI_APPLICATION = 'django_site.wsgi.application'
 
     LANGUAGE_CODE = "en-au"
@@ -89,7 +100,9 @@ class _Common(Configuration):
 
     # DO NOT EVER USE THIS ON A PRODUCTION SITE
     # This is a VERY weak password hash, but it allows us to create lots of test users extremely quickly
-    PASSWORD_HASHERS = ("django.contrib.auth.hashers.UnsaltedSHA1PasswordHasher",)
+    PASSWORD_HASHERS = [
+        "django.contrib.auth.hashers.UnsaltedSHA1PasswordHasher",
+    ]
 
     SECRET_KEY = get_env_setting("SECRET_KEY")
 
@@ -97,16 +110,26 @@ class _Common(Configuration):
 
 
 class MultipleDb(_Common):
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.postgresql",
-            "HOST": get_env_setting("PGHOST", "localhost"),
-            "NAME": get_env_setting("PGDATABASE"),
-            "PORT": get_env_setting("PGPORT", "5432"),
-            "USER": get_env_setting(["PGUSER", "USER"]),
-            "PASSWORD": get_env_setting("PGPASSWORD", None),
-        }
+    MIDDLEWARE = _Common.MIDDLEWARE
+    MIDDLEWARE.insert(
+        MIDDLEWARE.index("django.middleware.security.SecurityMiddleware") + 1, "multidb.middleware.MultiDbMiddleware"
+    )
+
+    MULTIDB_COUNT = int(get_env_setting("MULTIDB_COUNT"))
+
+    # The default database won't actually be used in this example but if you had non-tenant data
+    # (eg admin logins) you might want to store some tables here
+    #
+    # The Database router assumes that the database suffix (tenant-*) matches the slug in the Account table
+    DATABASES = _Common.DATABASES | {
+        f"tenant-{i}": _Common.DATABASES["default"].copy()
+        | {"NAME": f"{_Common.DATABASES['default']['NAME']}_tenant-{i}"}
+        for i in range(MULTIDB_COUNT)
     }
+
+    DATABASE_ROUTERS = [
+        "multidb.routers.MultiDbTenancyRouter",
+    ]
 
     MODELS_MODULE = "multidb"
 
