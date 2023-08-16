@@ -11,10 +11,12 @@ from typing import Self
 from django.db.models import Manager
 from django.db.models import QuerySet
 
+from singleschema.middleware import current_tenant_id
+
 
 class TenantMissingError(RuntimeError):
     """
-    Tried to run a query on a tenanted model but didn't call .filter_scope() or .set_require_tenant(False)
+    Tried to run a query on a tenanted model but didn't call .filter_scope() or .require_tenant(False)
     """
 
     pass
@@ -85,11 +87,11 @@ class TenantedQuerySet(QuerySet):
     ###################
 
     def _clone(self, **kwargs):
+        require_tenant = kwargs.pop("require_tenant", self._require_tenant)
+        is_filter_tenant_applied = kwargs.pop("is_filter_tenant_applied", self._is_filter_tenant_applied)
         clone = super()._clone(**kwargs)
-        if "_require_tenant" not in kwargs:
-            clone._require_tenant = self._require_tenant
-        if "_is_filter_tenant_applied" not in kwargs:
-            clone._is_filter_tenant_applied = self._is_filter_tenant_applied
+        clone._require_tenant = require_tenant
+        clone._is_filter_tenant_applied = is_filter_tenant_applied
         return clone
 
     def _fetch_all(self):
@@ -105,12 +107,22 @@ class TenantedQuerySet(QuerySet):
             raise TenantMissingError(msg)
 
     def filter_tenant(self, account) -> Self:
-        self._is_filter_tenant_applied = True
-        return self.filter(account=account)
+        qs = self.filter(account=account)
+        qs._is_filter_tenant_applied = True
+        return qs
 
-    def set_require_tenant(self, value: bool = True) -> Self:
-        self._require_tenant = value
-        return self
+    def filter_current_tenant(self):
+        tenant = current_tenant_id()
+        if tenant is None:
+            # this will happen if you're an admin and can see everything
+            # in that case we return everything
+            #
+            # depending on your requirements you may want to remove this codepath entirely
+            return self._clone(is_filter_tenant_applied=True)
+        return self.filter_tenant(tenant)
+
+    def require_tenant(self, value: bool = True) -> Self:
+        return self._clone(require_tenant=value)
 
 
 class TenantedManager(Manager):
@@ -127,7 +139,7 @@ class TenantedManager(Manager):
 
     def get_queryset(self) -> TenantedQuerySet:
         qs = super().get_queryset()
-        qs = qs.set_require_tenant(self._require_tenant)
+        qs = qs.require_tenant(self._require_tenant)
 
         if not isinstance(qs, TenantedQuerySet):
             # make sure that a dev didn't override the queryset

@@ -26,10 +26,11 @@ class CurrentTenantMiddleware:
             response = self.get_response(request)
             return response
 
-    def get_tenancy_slug_from_request(self, request: HttpRequest) -> str:
+    def get_tenancy_slug_from_request(self, request: HttpRequest) -> str | None:
         # adapt this to whatever scheme you use for determining the tenancy
         #
         # this code assumes that the domains look like:
+        #  localhost
         #  tenancy-0.localhost
         #  tenancy-1.localhost
         #  tenancy-2.localhost
@@ -38,6 +39,9 @@ class CurrentTenantMiddleware:
 
         if match := re.fullmatch("^(?P<tenant>tenant-[0-9]+)\.localhost(:[0-9]+)?", host):
             return match["tenant"]
+
+        if host.split(":")[0] == "localhost":
+            return None
 
         raise ValueError("Unsupported hostname")
 
