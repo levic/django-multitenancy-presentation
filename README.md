@@ -46,12 +46,22 @@ for i in {0..$(( $MULTIDB_COUNT - 1 ))} ; do
   (
     db="${PGDATABASE}_tenant-$i"
     # uncomment the DROP if you want clean databases
-    echo "DROP DATABASE \"$db\";" | psql
+    #echo "DROP DATABASE \"$db\";" | psql
     echo "CREATE DATABASE \"$db\";" | psql
     ./manage.py migrate --database "tenant-$i"
   )
 done
 ```
+
+
+### Single Database/Schema Setup
+
+```bash
+# uncomment the DROP if you want clean databases
+#echo "DROP DATABASE \"$PGDATABASE\";" | psql postgres
+echo "CREATE DATABASE \"$PGDATABASE\";" | psql postgres
+./manage.py migrate
+````
 
 ### Create sample test data
 ```bash

@@ -9,7 +9,7 @@ from django.views.generic import ListView
 models = importlib.import_module(settings.MODELS_MODULE + ".models")
 
 
-class SubtaskListView(ListView):
+class BaseSubtaskListView(ListView):
     model = models.Subtask
     ordering = ["name"]
     template_name = "views/subtask_list.html"

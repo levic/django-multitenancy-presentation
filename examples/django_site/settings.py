@@ -86,6 +86,7 @@ class _Common(Configuration):
             "PORT": get_env_setting("PGPORT", "5432"),
             "USER": get_env_setting(["PGUSER", "USER"]),
             "PASSWORD": get_env_setting("PGPASSWORD", None),
+            "CONN_MAX_AGE": None,  # comment out to disable persistent connections
         },
     }
 
@@ -108,14 +109,26 @@ class _Common(Configuration):
 
     DEBUG = True
 
+    LOGGING = {
+        "version": 1,
+        # disable_existing_loggers disabled as per:
+        # https://github.com/django-extensions/django-extensions/issues/1626
+        # (easier than reconfiguring logging)
+        "disable_existing_loggers": False,
+    }
+
 
 class MultipleDb(_Common):
-    MIDDLEWARE = _Common.MIDDLEWARE
+    ALLOWED_HOSTS = [
+        "localhost",
+        ".localhost",
+    ]
+    MIDDLEWARE = _Common.MIDDLEWARE.copy()
     MIDDLEWARE.insert(
         MIDDLEWARE.index("django.middleware.security.SecurityMiddleware") + 1, "multidb.middleware.MultiDbMiddleware"
     )
 
-    MULTIDB_COUNT = int(get_env_setting("MULTIDB_COUNT"))
+    MULTIDB_COUNT = int(get_env_setting("MULTIDB_COUNT", "0"))
 
     # The default database won't actually be used in this example but if you had non-tenant data
     # (eg admin logins) you might want to store some tables here
@@ -137,4 +150,28 @@ class MultipleDb(_Common):
 
     INSTALLED_APPS = _Common.INSTALLED_APPS + [
         "multidb",
+    ]
+
+    def __init__(self):
+        super().__init__()
+        assert self.MULTIDB_COUNT > 0
+
+
+class SingleSchema(_Common):
+    ALLOWED_HOSTS = [
+        "localhost",
+        ".localhost",
+    ]
+    MIDDLEWARE = _Common.MIDDLEWARE.copy()
+    MIDDLEWARE.insert(
+        MIDDLEWARE.index("django.middleware.security.SecurityMiddleware") + 1,
+        "singleschema.middleware.SingleSchemaMiddleware",
+    )
+
+    MODELS_MODULE = "singleschema"
+
+    AUTH_USER_MODEL = "singleschema.User"
+
+    INSTALLED_APPS = _Common.INSTALLED_APPS + [
+        "singleschema",
     ]

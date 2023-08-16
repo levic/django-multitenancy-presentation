@@ -1,21 +1,21 @@
-# from django.apps import apps
-from contextlib import nullcontext
+import importlib
 
 from django.conf import settings
-
-# from django.core import checks
-# from django.core.checks.registry import registry
 from django.core.management.base import BaseCommand
+from django.db import router
 from django.db import transaction
 from factory.fuzzy import FuzzyInteger
 from factory.random import reseed_random
 
-from multidb.routers import use_tenancy_db
+from multidb.middleware import MultiDbMiddleware
+from singleschema.middleware import SingleSchemaMiddleware
 from ...factories import AccountFactory
 from ...factories import UserFactory
 from ...factories import ProjectFactory
 from ...factories import TaskFactory
 from ...factories import SubtaskFactory
+
+models = importlib.import_module(settings.MODELS_MODULE + ".models")
 
 
 class Command(BaseCommand):
@@ -125,30 +125,21 @@ class Command(BaseCommand):
         tasks_count = 0
         subtasks_count = 0
 
-        if hasattr(settings, "MULTIDB_COUNT"):
+        if "multidb" in settings.INSTALLED_APPS:
             assert accounts <= settings.MULTIDB_COUNT
-
-            # the MultiDB setup requires you to do some manual DB switching for each account
-            # (esp transactions)
-            # in particular, on a production site you'll want to create your own wrapper to transaction.atomic()
-            def account_context(account_slug):
-                return use_tenancy_db(account_slug)
-
-            def get_db_alias(account_slug):
-                return account_slug
-
+            account_context = MultiDbMiddleware.use_current_tenancy_slug
+        elif "singleschema":
+            account_context = SingleSchemaMiddleware.use_current_tenancy_slug
         else:
-            account_context = nullcontext
-
-            def get_db_alias(account_slug):
-                return "default"
+            raise RuntimeError("Unrecognised configuration")
 
         for account_i in range(accounts):
             account_slug = f"tenant-{account_i}"
-            db_alias = get_db_alias(account_slug)
             with account_context(account_slug):
+                account = AccountFactory.build(slug=account_slug)
+                db_alias = router.db_for_write(models.Account, instance=account)
                 with transaction.atomic(using=db_alias):
-                    account = AccountFactory(slug=account_slug)
+                    account.save()
                     accounts_count += 1
 
                     n_users = FuzzyInteger(min_users, max_users).fuzz()
@@ -160,11 +151,19 @@ class Command(BaseCommand):
                     projects_count += len(projects)
 
                     n_tasks = FuzzyInteger(min_tasks, max_tasks).fuzz() * len(projects)
-                    tasks = TaskFactory.create_batch(n_tasks, project=projects)
+                    tasks = TaskFactory.create_batch(
+                        n_tasks,
+                        project=projects,
+                        **{"account": account} if hasattr(models.Task, "account") else {},
+                    )
                     tasks_count += len(tasks)
 
                     n_subtasks = FuzzyInteger(min_subtasks, max_subtasks).fuzz() * len(tasks)
-                    subtasks = SubtaskFactory.create_batch(n_subtasks, task=tasks)
+                    subtasks = SubtaskFactory.create_batch(
+                        n_subtasks,
+                        task=tasks,
+                        **{"account": account} if hasattr(models.Subtask, "account") else {},
+                    )
                     subtasks_count += len(subtasks)
 
                     if accounts > 10:

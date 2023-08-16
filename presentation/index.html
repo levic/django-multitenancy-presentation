@@ -368,7 +368,7 @@
 								<code data-trim data-noescape class="language-python">
 									class ProjectQuerySet(QuerySet):
 										def filter_tenant(queryset, account):
-											return self.queryset.filter(account=account)
+											return self.filter(account=account)
 
 									class Project(Model):
 										objects = Manager.from_queryset(ProjectQuerySet)()
@@ -389,7 +389,7 @@
 								<code data-trim data-noescape class="language-python">
 									class SubtaskQuerySet(QuerySet):
 										def filter_tenant(queryset, account):
-											return self.queryset.filter(task__project__account=account)
+											return self.filter(task__project__account=account)
 
 									class Subtask(Model):
 										objects = Manager.from_queryset(SubtaskQuerySet)()

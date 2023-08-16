@@ -1,7 +1,6 @@
 from contextlib import contextmanager
 
-from .middleware import get_current_tenancy_slug
-from .middleware import use_current_tenancy_slug
+from multidb.middleware import MultiDbMiddleware
 
 
 class MultiDbTenancyRouter:
@@ -11,20 +10,12 @@ class MultiDbTenancyRouter:
     """
 
     def db_for_read(self, model, **hints):
-        slug = get_current_tenancy_slug()
-        print(f"- read from {slug}")
+        slug = MultiDbMiddleware.get_current_tenancy_slug()
         return slug
 
     def db_for_write(self, model, **hints):
-        slug = get_current_tenancy_slug()
-        print(f"- write to {slug}")
+        slug = MultiDbMiddleware.get_current_tenancy_slug()
         return slug
 
     def allow_migrate(self, db, app_label, model_name=None, **hints):
         return True
-
-
-@contextmanager
-def use_tenancy_db(slug: str):
-    with use_current_tenancy_slug(slug):
-        yield

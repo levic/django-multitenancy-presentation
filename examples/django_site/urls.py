@@ -1,8 +1,11 @@
+import importlib
+
+from django.conf import settings
 from django.urls import path
 from django.urls import reverse_lazy
 from django.views.generic import RedirectView
 
-from common import views
+views = importlib.import_module(settings.MODELS_MODULE + ".views")
 
 urlpatterns = [
     path("", RedirectView.as_view(url=reverse_lazy("subtasks")), name="homepage"),
