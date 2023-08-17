@@ -88,9 +88,9 @@
 
 						Assumptions: python devs who have basic familiarity with django's ORM<br/>
 
-						As an aside, not going to talk about today, but if you're using the default
-						django permissions system then you might want to take a look at some of the 3rd
-						party modules like `rules` that implement record-level permissions.
+						Many setup variations on what I'm going to present, but I'm just covering
+						what I think are the most interesting. You've probably encountered some of
+						these but hopefully by the end you'll have picked up one or two new strategies<br/>
 					</aside>
 				</section>
 
@@ -234,6 +234,7 @@
 							[6-7min]
 							- single django app server that uses middleware to examine incoming requests and then use that info in
 								django's database routing.</br>
+							- the hooks to do all of these are something that django readily provides</br>
 
 						</aside>
 
@@ -256,7 +257,7 @@
 							  but you do save on app server hosting<br/>
 								- while code is generally simple, do sometimes need to be aware of multiple tenants.
 									for example, by default django transaction only apply to the default connection<br/>
-								- in particular: how are you going to handle the situation where migrations fail on
+								- the biggest problem that it inherits: how are you going to handle the situation where migrations fail on
 									tenancy 1,500 out of 3,000? transactions can't cross databases so there's no easy rollback. unlike
 									the previous setup you're now in the situation where you have a single app server running code that
 									has to deal with databases in both the new and the old states.
@@ -308,7 +309,7 @@
 							    run into postgres limitation (eg number of concurrent read locks)<br/>
 							- Cross-Tenancy Queries: possible because the tables are all in the same database,
 								however to make this actually happen you end up with giant SQL UNIONs<br/>
-							- admin/deployment is better but there are still some limitations<br/>
+							- admin/deployment is a little better HOWEVER<br/>
 
 							- transaction limits in postgres; if you try to modify too many tables in one transaction
 									you will run into those limits, which causes issues with migratinos
@@ -413,8 +414,8 @@
 
 						<aside class="notes">
 							[16-17min]
-							- Here's an example database of a simple task tracking system
-							- Idea here is having a standard interface on every queryset &
+							- Here's an example database of a simple task tracking system<br/>
+							- Idea of custom managers is having a standard interface on every queryset &
 								model manager which will apply a tenancy filter, and we use this
 								as the default managers for each model<br/>
 							- Nice consequence of standardising this is that your base
@@ -487,8 +488,9 @@
 								then it's possible to traverse these reverse FK references and break out of a tenancy.<br/>
 								- in the example here if users refer to a shared table of countries then it's possible
 							    to traverse FK links to users that are not in the same tenancy<br/>
-							- If you want to be strict you can use Django System Checks to
-							  verify that FKs on models have reverse FKs disabled<br/>
+							- Possible to turn off reverse FK generation: If you want to be strict you can use
+								Django System Checks to verify that this has been done for every FKs
+								or at least on FKs that are not marked as being part of a tenancy<br/>
 							- Always the possibility that a developer could simply forget to call filter_tenant()<br/>
 						</aside>
 
@@ -526,6 +528,8 @@
 								- refresh_from_db()<br/>
 								- migrations<br/>
 								- fetching FK relationships<br/>
+								- you're also likely to have encountered this if you've ever
+							 		used a system with soft deletes in django<br/>
 						</aside>
 					</section>
 
@@ -581,10 +585,12 @@
 
 							- harder to move data between tenants (many more links that need to be rewritten)<br/>
 
-							- denormalisation caveats: if your tables all have FK relationships to the tenant
-								and you modify the tenant record then postgres has to update index data for record
-								that's linked to it<br/>
-							- also possible for coding mistakes to introduce inconsistent data to the database
+							- <b>denormalisation caveats</b> <br/>
+								- database will be bigger<br/>
+								- if your tables all have FK relationships to the tenant
+									and you modify the tenant record then postgres has to update index data for record
+									that's linked to it<br/>
+								- also possible for coding mistakes to introduce inconsistent data to the database
 							<br/>
 
 							- nice 3rd party package called django-multitenant: which assumes your
@@ -627,12 +633,15 @@
 							[23-24min]
 							- Postgres has the ability to add security checks on a row-by-row
 							  basis to each table<br/>
+							- what this effectively does is inject an extra filter on the data
+								every time you access a table (that includes not just SELECTS,
+								but INSERT/UPDATE & DELETE)<br/>
 							- the policy check expression can perform SELECTs, but for performance reasons
 								you want to be careful if you do that<br/>
 							- most examples tend to have policies that depend on the
 							  current postgres user, but users are per-server, not per-database.
 							  this means that often you don't have access to create new users,
-								and if you do you need to be careful that users don't conflict between databases
+								and if you do you need to be careful that users don't conflict between databases<br/>
 						</aside>
 					</section>
 
@@ -713,13 +722,15 @@
 
 						<aside class="notes">
 							[26-27min]
-							- Again, if using connection pooling need to make sure you have
+							- Again, because we're setting some state on the connection,
+								if you're using connection pooling need to make sure you have
 							  this set up correctly so that you don't interleaving queries
 								from different requests<br/>
 
 							- potential performance issues:
 								- if you do an EXPLAIN ANALYZE you'll see that this injects
-							 		extra constraints into your queries. you may need to alter
+							 		extra constraints into your queries.<br/>
+									because of those extra constraints you may need to alter
 							    your indexes so that these run efficiently;
 								  postgres optimiser is pretty good but more complicate queries
 							    always run the risk that it will choose a bad query plan and
@@ -728,8 +739,9 @@
 							    tenancy filters then this shouldn't be an issue, and is a nice
 							    backstop in case you've messed something up<br/>
 
-							- depending on your postgres user permission (in particular superusers)
-								they could bypass permission checks entirely, so make sure you test properly
+							- some users (in particular superusers) will bypass permission
+									checks entirely, so make sure you test properly or these
+									checks will do nothing
 								<br/>
 
 							- if using postgres users for your RLS checks then make sure that
@@ -761,11 +773,16 @@
 						</ol>
 						<aside class="notes">
 							In summary<br/>
-							- Multiple app servers & databases are extremely simple but can be costly<br/>
-							- Using a single database scales much better with number of tenants,<br/>
-							  - Custom django managers/queryset can be used to standardise on tenancy filtering<br/>
-							  - Denormalising tenancy data can simplify your code at the expense of larger tables/indexes and less flexibility<br/>
+							- Multiple app servers & databases are extremely simple but can be costly and painful with a large number of tenants<br/>
+							- Using a single app server helps with costs, but its biggest problem is the potential for migrations applied to half the tenancies<br/>
+							- Using a single database scales much better with number of tenants, but doesn't have the same isolation guarantees<br/>
+							  - Custom django managers/queryset caan be used to detect missing filters and provide consistency to your code<br/>
+							  - Denormalising tenancy data can simplify your code and add better security at the expense of database size and less flexibility<br/>
 							  - Postgres row-level security checks can act as a nice failsafe<br/>
+
+
+						<br/>
+							If time: don't use the default django permissions system, use the 3rd party `rules` module instead
 						</aside>
 					</section>
 				</section>
