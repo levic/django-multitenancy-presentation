@@ -232,7 +232,7 @@
 						</div>
 
 						<aside class="notes">
-							[6-7min]
+							[4-5min]
 							- single django app server that uses middleware to examine incoming requests and then use that info in
 								django's database routing.</br>
 							- the hooks to do all of these are something that django readily provides</br>
@@ -253,7 +253,7 @@
 						</div>
 
 						<aside class="notes">
-							[7-9min]
+							[5-7min]
 							- inherits almost all of the advantages and disadvantages of having multiple app servers,
 							  but you do save on app server hosting<br/>
 								- while code is generally simple, do sometimes need to be aware of multiple tenants.
@@ -274,7 +274,7 @@
 						</div>
 
 						<aside class="notes">
-							[9-10min]
+							[7-8min]
 							- A nicer variation of this is to use on schema per tenant<br/>
 							- If you've not used schemas before, they are postgres' equivalent of namespaces
 								- Conceptually you can think of these as mini databases within a real database
@@ -302,9 +302,10 @@
 						</div>
 
 						<aside class="notes">
-							[10-12min]
+							[8-10min]
 							- Again, majority of code can pretend that tenancies don't exist at all and it "just works";
 							  because it's in the one database transactions will work without surprises<br/>
+							- (Isolation: skip)<br/>
 							- very large numbers of schemas:
 								- when you try to run some pg tools (pg_dump, pg_restore) with default settings then you'll
 							    run into postgres limitation (eg number of concurrent read locks)<br/>
@@ -336,7 +337,7 @@
 						</div>
 
 						<aside class="notes">
-							[12-13min]
+							[10-12min]
 							- most common setup single app server and single database, all
 								tenants' data is stored the same tables<br/>
 							- in order to keep tenants separate from each other there are
@@ -355,7 +356,7 @@
 						</div>
 
 						<aside class="notes">
-							[12-13min]
+							[12-12min]
 							- these are the 3 that we're going to be talking about
 						</aside>
 
@@ -374,7 +375,7 @@
 						</div>
 
 						<aside class="notes">
-							[13-14min]
+							[12-14min]
 							Common characteristics <br/>
 							- code not as simple, you always have to be aware of the fact that
 								multiple tenants are in the same tables<br/>
@@ -414,8 +415,9 @@
 						</div>
 
 						<aside class="notes">
-							[16-17min]
-							- Here's an example database of a simple task tracking system<br/>
+							[14-15min]
+							- Here's an example database diagram for a simple task tracking
+								system, and some associated Model code<br/>
 							- Idea of custom managers is having a standard interface on every queryset &
 								model manager which will apply a tenancy filter, and we use this
 								as the default managers for each model<br/>
@@ -449,7 +451,7 @@
 						</div>
 
 						<aside class="notes">
-							[16-17min]
+							[14-15min]
 							<!--- if you really want to be clever then this is python. you can
 								use a single common Queryset class across all models and by
 								introspecting the model generate the joins automatically<br/>-->
@@ -459,6 +461,9 @@
 								want some Middleware to keep track of the current tenant in
 								thread-local storage which you can then call from anywhere in
 								the system to know what tenancy to filter by<br/>
+							- Be aware that django only creates 1 copy of each Middleware on
+								startup, which is why you need to use `threading.local` to store
+								the current tenant<br/>
 						</aside>
 
 					</section>
@@ -480,10 +485,10 @@
 
 
 						<aside class="notes">
-							[17-18min]
+							[15-16min]
 							- Caveats here: if you write custom SQL outside the ORM then you're on your own<br/>
-							- Having the join can change the behaviour of some django ORM aggregate queries;
-								it's a fairly rare circumstance but sometimes you'll need to do the filtering manually<br/>
+							- Having the joins to the tenant table can change the behaviour of some django ORM aggregate queries;
+								it's not a common circumstance but you will run into it and you'll need to do the filtering manually<br/>
 							- A more subtle problem is that by default any FKs in django will
 							  also create reverse FKs on the model you're referring to. If you have any tables that are shared between tenants
 								then it's possible to traverse these reverse FK references and break out of a tenancy.<br/>
@@ -518,9 +523,9 @@
 
 
 						<aside class="notes">
-							[18-19min]
-							- my personal preference: log warning in DEBUG mode, but failing
-								hard in CI tests & production; allows more flexibility when refactoring<br/>
+							[16-17min]
+							- or do something like log warning in DEBUG mode, and failing
+								hard in CI tests & production<br/>
 							- if make this mandatory you'll quickly run across the difference<br/>
 								between django's base manager and its default manager<br/>
 							<br/>
@@ -544,7 +549,7 @@
 							<img src="figures/fig-er-diagram-pk.svg" />
 						</div>
 						<aside class="notes">
-							[19-20min]
+							[17-18min]
 							- normally when we design a database we normalise everything<br/>
 							- again here's our task management system<br/>
 							- if we need to filter a subtask according to the account then we
@@ -559,7 +564,7 @@
 						</div>
 
 						<aside class="notes">
-							[20-20min]
+							[18-18min]
 							- something we can do is to denormalise and copy the tenant ID into every table<br/>
 						</aside>
 					</section>
@@ -579,7 +584,7 @@
 						</ul>
 
 						<aside class="notes">
-							[20-23min]
+							[18-21min]
 							- WHY? simplifies our code (no joins; aggregate queries aren't going to
 							  be affected by joins), and is desirable for row-Level security which we'll talk about next<br/>
 							- doesn't meaningfully affect anything else (may be a performance impact but depending on your system it may be positive or negative)<br/>
@@ -631,7 +636,7 @@
 						</div>
 
 						<aside class="notes">
-							[23-24min]
+							[21-23min]
 							- Postgres has the ability to add security checks on a row-by-row
 							  basis to each table<br/>
 							- what this effectively does is inject an extra filter on the data
@@ -696,7 +701,7 @@
 						</div>
 
 						<aside class="notes">
-							[24-26min]
+							[22-24min]
 							- A nicer strategy is to have some middleware set the current
 								tenant ID on the PG connection and have the row level security
 								check against that<br/>
@@ -722,7 +727,7 @@
 						</ul>
 
 						<aside class="notes">
-							[26-27min]
+							[24-25min]
 							- Again, because we're setting some state on the connection,
 								if you're using connection pooling need to make sure you have
 							  this set up correctly so that you don't interleaving queries
@@ -763,7 +768,7 @@
 						<ol>
 <!--					<li>Django permissions</li>-->
 							<li>Multiple app servers</li>
-							<li>Multiple databases/schemas</li>
+							<li>Single app server, multiple databases/schemas</li>
 							<li>Single database
 								<ul>
 									<li>Django Managers</li>
@@ -778,7 +783,7 @@
 							- Using a single app server helps with costs, but its biggest problem is the potential for migrations applied to half the tenancies<br/>
 							- Using a single database scales much better with number of tenants, but doesn't have the same isolation guarantees<br/>
 							  - Custom django managers/queryset caan be used to detect missing filters and provide consistency to your code<br/>
-							  - Denormalising tenancy data can simplify your code and add better security at the expense of database size and less flexibility<br/>
+							  - Denormalising tenancy data can simplify your code at the expense of database size and flexibility<br/>
 							  - Postgres row-level security checks can act as a nice failsafe<br/>
 
 
@@ -800,9 +805,15 @@
 						<div class="center">Code samples: <a href="https://github.com/levic/django-multitenancy-presentation">https://github.com/levic/</a></div>
 					</section>
 
+					<aside class="notes">
+							The end. If you're interested I have code samples on github that cover
+							most of what I've talked about, it's pinned at the top of my github account
+						</aside>
+
 
 					<section class="left">
 						<h2>Questions / Comments?</h2>
+						<div class="center">Code samples: <a href="https://github.com/levic/django-multitenancy-presentation">https://github.com/levic/<br/>django-multitenancy-presentation</a></div>
 					</section>
 				</section>
 
