@@ -62,14 +62,14 @@
 					<p class="fragment fade-in">"<em>Tenant</em>"?</p>
 
 					<aside class="notes">
+						[0-1min]
 						- Particular focus: what can we do to ensure that developer mistakes don't allow data leakage?<br/>
 
 						- What is a "tenant"? Account that has data that is logically isolated from others in the system
 							- One example would be gmail where users should not be able to see mailboxes of other users even though
 								using the same server resources
 						- Not necessarily a user. Pretty common to have company accounts with multiple users where users
-							can see all or some of the data only within that account. Examples would be Salesforce. There
-							might be additional permissions within that account, but it's all considered to be a single tenant.
+							can see all or some of the data only within that account. Examples would be Salesforce.
 					</aside>
 				</section>
 
@@ -83,13 +83,14 @@
 					</ol>
 
 					<aside class="notes">
-						Will spend most time on the last one because that's the most interesting
+						[1-2min]
+						Will spend most time on the last one because that's the most interesting<br/>
 
-						Assumptions: python devs who have basic familiarity with django's ORM
+						Assumptions: python devs who have basic familiarity with django's ORM<br/>
 
-						As an aside, if we're talking about access control in general, you don't want to use the built-in
-						django permissions system. Look at some of the 3rd party modules like `rules` that implement record-level
-						permissions.
+						As an aside, not going to talk about today, but if you're using the default
+						django permissions system then you might want to take a look at some of the 3rd
+						party modules like `rules` that implement record-level permissions.
 					</aside>
 				</section>
 
@@ -175,6 +176,7 @@
 						</div>
 
 						<aside class="notes">
+							[2-4min]
 							- First major strategy
 							- each tenant gets their own app server and their own database on completely separate domains
 						</aside>
@@ -192,27 +194,28 @@
 						</div>
 
 						<aside class="notes">
+							[4-6min]
 							- code is simple.
 								- very difficult for devs to make a mistake and accidentally expose data from another tenancy<br/>
 							- isolation:
-								- performance (one big tenant doesn't affect others)
-								- sometimes the only option if you have corporate customers with their own security policies
-								- cost<br/>
-							- lots tenants:
-								- becomes painful. need to stand up new app servers and databases.
-								- can be automated, but many things that can go wrong.
-								- if each tenancy gets a new DB server, cost will be dramatically higher
-								- OTOH if each tenancy is a new DB on a shared server then there's no performance isolation & DB overheads start to matter<br/>
+								- not just data but also performance (one big tenant doesn't affect others)<br/>
+								- while costs are high overall, is easier to pass on costs to specific tenants<br/>
+							- lots tenants:<br/>
+								- becomes painful. need to stand up new app servers and databases.;<br/>
+								- can be automated, but more moving parts is more things that can go wrong;<br/>
 							- cross-tenancy
 								- no easy way to run queries (like usage reports) that aggregate data from all tenancies <br/>
-							- admin: how to take a DB snapshot?<br/>
+							- admin: how to take a DB snapshot when multiple databases?<br/>
 							- deployments: have to roll out migrations & updates to each tenancy one at a time<br/>
 
 							Usually this is a bad idea<br/>
 
-							why mention this at all? can be a good idea if you have a small number of tenants.
-							I had a client whose CRM was written assuming  a single tenancy. When they decided to license it to
-							someone else it was much simpler to do this than to spend time rewriting it to support multiple tenants.
+							why mention this at all? can be a good idea if you have a small number of tenants.<br/>
+							- I had a client whose CRM was written assuming  a single tenancy. When they decided to license it to
+							someone else it was much simpler to do this than to spend time rewriting it to support multiple tenants.<br/>
+
+							- sometimes the only option if you have corporate customers with their own security policies
+
 
 						</aside>
 
@@ -228,6 +231,7 @@
 						</div>
 
 						<aside class="notes">
+							[6-7min]
 							- single django app server that uses middleware to examine incoming requests and then use that info in
 								django's database routing.</br>
 
@@ -238,23 +242,24 @@
 						<h2 class="r-fit-text">Multiple Databases</h2>
 						<div>
 							<ul>
-								<li><span class="fragment fade-in">✅</span> Code Simplicity</li>
-								<li><span class="fragment fade-in">✅</span> Good Isolation </li>
-								<li><span class="fragment fade-in">❌</span> Many Tenants</li>
-								<li><span class="fragment fade-in">❌</span> Cross-Tenancy Queries</li>
-								<li><span class="fragment fade-in">❌</span> Administration, Deployment</li>
+								<li><span class="fragment fade-in" data-fragment-index="1">✅</span> Code Simplicity</li>
+								<li><span class="fragment fade-in" data-fragment-index="1">✅</span> Good Isolation </li>
+								<li><span class="fragment fade-in" data-fragment-index="1">❌</span> Many Tenants</li>
+								<li><span class="fragment fade-in" data-fragment-index="1">❌</span> Cross-Tenancy Queries</li>
+								<li><span class="fragment fade-in" data-fragment-index="1">❌</span> Administration, Deployment</li>
 							</ul>
 						</div>
 
 						<aside class="notes">
+							[7-9min]
 							- inherits almost all of the advantages and disadvantages of having multiple app servers,
 							  but you do save on app server hosting<br/>
-								- Still need to be aware of multiple tenants: most notably that by default transaction decorators
-								& context managers will only apply to the default connection<br/>
+								- while code is generally simple, do sometimes need to be aware of multiple tenants.
+									for example, by default django transaction only apply to the default connection<br/>
 								- in particular: how are you going to handle the situation where migrations fail on
 									tenancy 1,500 out of 3,000? transactions can't cross databases so there's no easy rollback. unlike
-									the previous setup you're now in the situation where you have a single app server that has to deal
-									with databases in both the new and the old states.
+									the previous setup you're now in the situation where you have a single app server running code that
+									has to deal with databases in both the new and the old states.
 						</aside>
 					</section>
 				</section>
@@ -267,12 +272,15 @@
 						</div>
 
 						<aside class="notes">
-							- A nicer variation of this is to use on schema per tenant
+							[9-10min]
+							- A nicer variation of this is to use on schema per tenant<br/>
 							- If you've not used schemas before, they are postgres' equivalent of namespaces
 								- Conceptually you can think of these as mini databases within a real database
-								- The table definitions inside each schema are entirely independent of one another
-							- the idea here is that middleware examines the request and the tells the connection which schema
-							  to use
+								- The table definitions inside each schema are entirely independent of one another<br/>
+							- the idea here is that middleware examines the request but this time sets a variable in the
+							  connection which tells postgres the schema to use<br/>
+							<!--- table inheritance is a related PG feature which at first seems useful until you
+							  read the fine print and discover that FKs & unique constraints don't work-->
 						</aside>
 					</section>
 
@@ -285,33 +293,32 @@
 								<li><span class="fragment fade-in">*️⃣</span> Many Tenants</li>
 								<li><span class="fragment fade-in">*️⃣</span> Cross-Tenancy Queries</li>
 								<li><span class="fragment fade-in">*️⃣</span> Administration, Deployment</li>
-								<li class="fragment fade-in">⚠️ Transaction limits, connection pooling</li>
+								<li class="fragment fade-in">⚠️ Transaction limits</li>
+								<li class="fragment fade-in">⚠️ Connection pooling</li>
 								<li class="fragment fade-in"><code>django-tenants</code></li>
 							</ul>
 						</div>
 
 						<aside class="notes">
-							- Again, majority of code can pretend that tenancies don't exist at all and it "just works"<br/>
-							- many tenants
-									- post overhead per schema/table. can be an issue if you have lots of schemas
-									- very large numbers of schemas:
-										- pg tools (pg_dump, pg_restore) can fail on default settings with very large number of items (20k)<br/>
+							[10-12min]
+							- Again, majority of code can pretend that tenancies don't exist at all and it "just works";
+							  because it's in the one database transactions will work without surprises<br/>
+							- very large numbers of schemas:
+								- when you try to run some pg tools (pg_dump, pg_restore) with default settings then you'll
+							    run into postgres limitation (eg number of concurrent read locks)<br/>
 							- Cross-Tenancy Queries: possible because the tables are all in the same database,
-								however you could end up with rather large SQL UNIONs to actually make that happen<br/>
-							- deployment issues:
-								- transaction limits in postgres; if you try to modify too many tables in one transaction
-									you will run into those limits
+								however to make this actually happen you end up with giant SQL UNIONs<br/>
+							- admin/deployment is better but there are still some limitations<br/>
+
+							- transaction limits in postgres; if you try to modify too many tables in one transaction
+									you will run into those limits, which causes issues with migratinos
 								- if done without transactions then back to earlier problem where you might have migrations applied to
 							    half of the system when something fails<br/>
-							- if you've not used it before, connection pooling is where instead of creating a new connection to the
-							    DB on every request you have a proxy that allows you to reuse the same connection between requests;
-							    depending on the configuration you can even reuse the same connection for two simultaneous requests.
-									that works if the connection is stateless, but the default schema that you're using is a property of
-									the connection so this has to be disabled<br/>
+							- if you've not used it before, connection pooling it's a way of sharing DB connections between requests.
+								need to be careful that your setup doesn't allow interleaving of queries from simultaneous requests that
+								may be using different schema<br/>
 
 							- django-tenants maps a subdomain to a database schema and has the middleware already written for you
-
-							- table inheritance PG feature at first useful until you realise that FKs & unique constraints don't work
 						</aside>
 
 					</section>
@@ -325,6 +332,14 @@
 						<div class="figure">
 							<img src="figures/fig-single-shared.svg" />
 						</div>
+
+						<aside class="notes">
+							[12-13min]
+							- most common setup single app server and single database, all
+								tenants' data is stored the same tables<br/>
+							- in order to keep tenants separate from each other there are
+								number of different strategies that you can follow
+						</aside>
 					</section>
 
 					<section class="left">
@@ -338,12 +353,10 @@
 						</div>
 
 						<aside class="notes">
-							- single app server and single database, all tenants are stored
-								the same tables is probably the most common way of implementing
-								multi-tenancy
-							- in order to keep tenants separate from each other there are
-								number of different strategies that you can follow
+							[12-13min]
+							- these are the 3 that we're going to be talking about
 						</aside>
+
 					</section>
 
 					<section class="left">
@@ -359,6 +372,8 @@
 						</div>
 
 						<aside class="notes">
+							[13-14min]
+							Common characteristics <br/>
 							- code not as simple, you always have to be aware of the fact that
 								multiple tenants are in the same tables<br/>
 							- isolation is not great; in particular coding mistakes can expose
@@ -397,17 +412,16 @@
 						</div>
 
 						<aside class="notes">
+							[16-17min]
+							- Here's an example database of a simple task tracking system
 							- Idea here is having a standard interface on every queryset &
 								model manager which will apply a tenancy filter, and we use this
-								as the default model managers<br/>
+								as the default managers for each model<br/>
 							- Nice consequence of standardising this is that your base
 								classes CBVs can always call the same filtering function
 							  regardless of the model<br/>
 							- If a table doesn't directly join to your tenancy table then
-								you just use the ORM's table traversal to get there.<br/>
-							- ?? If you really want to be clever then your models can define
-								a DAG leading back to the tenancy table and the joins can be
-								generated automatically
+								you just use the ORM's table traversal to get there.
 						</aside>
 
 					</section>
@@ -433,14 +447,16 @@
 						</div>
 
 						<aside class="notes">
-							- if you really want to be clever then this is python. you can
+							[16-17min]
+							<!--- if you really want to be clever then this is python. you can
 								use a single common Queryset class across all models and by
-								introspecting the model generate the joins automatically<br/>
+								introspecting the model generate the joins automatically<br/>-->
 							- Practical matter: current tenant ID will be obtained from the
 								request or the request user; it's painful to have to pass this
 								down potentially very many layers of code so you'll very likely
 								want some Middleware to keep track of the current tenant in
-								thread-local storage.<br/>
+								thread-local storage which you can then call from anywhere in
+								the system to know what tenancy to filter by<br/>
 						</aside>
 
 					</section>
@@ -462,12 +478,15 @@
 
 
 						<aside class="notes">
+							[17-18min]
 							- Caveats here: if you write custom SQL outside the ORM then you're on your own<br/>
 							- Having the join can change the behaviour of some django ORM aggregate queries;
-								it's a fairly rare circumstance but sometimes you'll need to do the filters in another manner<br/>
+								it's a fairly rare circumstance but sometimes you'll need to do the filtering manually<br/>
 							- A more subtle problem is that by default any FKs in django will
-							  also create reverse FKs on the model. If you have any tables that are shared between tenants
+							  also create reverse FKs on the model you're referring to. If you have any tables that are shared between tenants
 								then it's possible to traverse these reverse FK references and break out of a tenancy.<br/>
+								- in the example here if users refer to a shared table of countries then it's possible
+							    to traverse FK links to users that are not in the same tenancy<br/>
 							- If you want to be strict you can use Django System Checks to
 							  verify that FKs on models have reverse FKs disabled<br/>
 							- Always the possibility that a developer could simply forget to call filter_tenant()<br/>
@@ -496,7 +515,9 @@
 
 
 						<aside class="notes">
-							- or a mix of both: log warning in DEBUG mode, but failing hard in production<br/>
+							[18-19min]
+							- my personal preference: log warning in DEBUG mode, but failing
+								hard in CI tests & production; allows more flexibility when refactoring<br/>
 							- if make this mandatory you'll quickly run across the difference<br/>
 								between django's base manager and its default manager<br/>
 							<br/>
@@ -518,10 +539,11 @@
 							<img src="figures/fig-er-diagram-pk.svg" />
 						</div>
 						<aside class="notes">
+							[19-20min]
 							- normally when we design a database we normalise everything<br/>
-							- if we need to filter according to the tenant then we join one or
-							  more times until we get back to the table that contains the root
-							  tenancy information<br/>
+							- again here's our task management system<br/>
+							- if we need to filter a subtask according to the account then we
+							would join multiple times until we get back to the account table <br/>
 						</aside>
 					</section>
 
@@ -532,6 +554,7 @@
 						</div>
 
 						<aside class="notes">
+							[20-20min]
 							- something we can do is to denormalise and copy the tenant ID into every table<br/>
 						</aside>
 					</section>
@@ -540,42 +563,41 @@
 					<section class="left">
 						<h2 class="r-fit-text">Tenancy Denormalisation</h2>
 						<ul>
-							<li><span class="fragment fade-in">*️⃣</span> Simplicity</li>
-							<li><span class="fragment fade-in">*️⃣</span> Isolation</li>
-							<li><span class="fragment fade-in">✅</span> Many Tenants</li>
-							<li><span class="fragment fade-in">✅</span> Cross-Tenancy Queries</li>
-							<li><span class="fragment fade-in">✅</span> Administration, Deployment</li>
+							<li><span class="fragment fade-in" data-fragment-index="1">*️⃣</span> Simplicity</li>
+							<li><span class="fragment fade-in" data-fragment-index="2">*️⃣</span> Isolation</li>
+							<li><span class="fragment fade-in" data-fragment-index="2">✅</span> Many Tenants</li>
+							<li><span class="fragment fade-in" data-fragment-index="2">✅</span> Cross-Tenancy Queries</li>
+							<li><span class="fragment fade-in" data-fragment-index="2">✅</span> Administration, Deployment</li>
 							<li class="fragment fade-in">⚠️️ Harder to move data between tenants</li>
 							<li class="fragment fade-in">Standard denormalisation caveats</li>
 							<li class="fragment fade-in"><code>django-multitenant</code></li>
 						</ul>
 
 						<aside class="notes">
-							- WHY? simpler code (no joins; aggregate queries aren't going to
-							  be affected by joins), and opens up some possibilities later<br/>
-							- doesn't directly affect isolation<br/>
-							- in most cases it will improve scalability due to fewer joins<br/>
+							[20-23min]
+							- WHY? simplifies our code (no joins; aggregate queries aren't going to
+							  be affected by joins), and is desirable for row-Level security which we'll talk about next<br/>
+							- doesn't meaningfully affect anything else (may be a performance impact but depending on your system it may be positive or negative)<br/>
 
-							- harder to move data between tenants compared to a normalised schema<br/>
+							- harder to move data between tenants (many more links that need to be rewritten)<br/>
 
 							- denormalisation caveats: if your tables all have FK relationships to the tenant
 								and you modify the tenant record then postgres has to update index data for record
-								that's linked to it
-							  <br/>
-								You could store the tenant ID as an ordinary indexed integer instead of a FK,<br/>
-								or just store only the bare minimum of data in the tenant table, so that those updates are very infrequent
+								that's linked to it<br/>
+							- also possible for coding mistakes to introduce inconsistent data to the database
 							<br/>
 
 							- nice 3rd party package called django-multitenant: which assumes your
 							  tenant ID has been denormalised and will add WHERE clauses onto
-							  every ORM query. It also overrides the standard django FK field
+							  every ORM query. It also provides a replacement FK field
 							  to fix the FK traversal issue that I spoke about earlier<br/>
 							- Also worth mentioning is that the reason for this project is
 								that the company behind it makes a PG extension that
 								transparently shards your data between multiple postgres servers
-								using the denormalised tenant ID<br/>
-							- Microsoft bought them and now that's been rolled that into
-							  Azure as CosmosDB for PostgreSQL.
+								using the denormalised tenant ID in each record and that's completely
+								transparent to your application <br/>
+							- Microsoft bought them and now that's also been rolled into
+							  Azure as an option.
 						</aside>
 
 					</section>
@@ -602,13 +624,15 @@
 						</div>
 
 						<aside class="notes">
+							[23-24min]
 							- Postgres has the ability to add security checks on a row-by-row
-							  basis to each table
-							- that expression can include SELECTs, but for performance reasons
-								you want to be careful if you do that
-							- most examples tend to have RLS policies that depend on the
+							  basis to each table<br/>
+							- the policy check expression can perform SELECTs, but for performance reasons
+								you want to be careful if you do that<br/>
+							- most examples tend to have policies that depend on the
 							  current postgres user, but users are per-server, not per-database.
-							  this means that often you don't have access to create new users
+							  this means that often you don't have access to create new users,
+								and if you do you need to be careful that users don't conflict between databases
 						</aside>
 					</section>
 
@@ -662,14 +686,17 @@
 						</div>
 
 						<aside class="notes">
-							- A nicer strategy is to have some middleware set a variable on the
-								PG connection to the current tenant ID<br/>
+							[24-26min]
+							- A nicer strategy is to have some middleware set the current
+								tenant ID on the PG connection and have the row level security
+								check against that<br/>
 							- In this example we've set `django.account_id`.
 							  The dot in the var name is important. We're actually
 							  abusing the fact that this is how custom postgres
 							  extension modules are configured; postgres thinks that this is
 								a config setting for a module called "django" that we just
-								haven't loaded yet. It's also why the data is always a string.
+								haven't loaded yet.<br/>
+							- Because it's a config option is also why the data is always stored as a string.
 						</aside>
 
 					</section>
@@ -685,6 +712,7 @@
 						</ul>
 
 						<aside class="notes">
+							[26-27min]
 							- Again, if using connection pooling need to make sure you have
 							  this set up correctly so that you don't interleaving queries
 								from different requests<br/>
@@ -692,17 +720,17 @@
 							- potential performance issues:
 								- if you do an EXPLAIN ANALYZE you'll see that this injects
 							 		extra constraints into your queries. you may need to alter
-							    your indexes so that these run efficiently<br/>
-								- postgres optimiser is pretty good but more complicate queries
-							    increase the risk that it will choose a bad query plan and
-							    then you'll have to restructure your query<br/>
-							  - most of the times if your code is already applying correct
+							    your indexes so that these run efficiently;
+								  postgres optimiser is pretty good but more complicate queries
+							    always run the risk that it will choose a bad query plan and
+							    then you'll have to restructure your query;
+							    most of the times if your code was already applying correct
 							    tenancy filters then this shouldn't be an issue, and is a nice
 							    backstop in case you've messed something up<br/>
 
-							- if your postgres user is a postgres superuser or the table owner
-							  and you don't force RLS then they'll bypass RLS and it will
-							  do nothing!<br/>
+							- depending on your postgres user permission (in particular superusers)
+								they could bypass permission checks entirely, so make sure you test properly
+								<br/>
 
 							- if using postgres users for your RLS checks then make sure that
 							  the user taking backups can actually see all rows or
@@ -722,7 +750,7 @@
 						<ol>
 <!--					<li>Django permissions</li>-->
 							<li>Multiple app servers</li>
-							<li>Multiple databases</li>
+							<li>Multiple databases/schemas</li>
 							<li>Single database
 								<ul>
 									<li>Django Managers</li>
@@ -733,7 +761,6 @@
 						</ol>
 						<aside class="notes">
 							In summary<br/>
-							- Talked about using the full capabilty of the django permissions system <br/>
 							- Multiple app servers & databases are extremely simple but can be costly<br/>
 							- Using a single database scales much better with number of tenants,<br/>
 							  - Custom django managers/queryset can be used to standardise on tenancy filtering<br/>
@@ -754,7 +781,7 @@
 					</section>
 
 					<section class="left">
-						<h2>Questions?</h2>
+						<h2>Questions / Comments?</h2>
 					</section>
 				</section>
 
