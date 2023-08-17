@@ -3,3 +3,4 @@ django-configurations~=2.4
 python-dotenv~=1.0
 psycopg2~=2.9
 factory-boy~=3.3
+django_extensions~=3.2

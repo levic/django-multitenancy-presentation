@@ -7,8 +7,6 @@ from django.db import transaction
 from factory.fuzzy import FuzzyInteger
 from factory.random import reseed_random
 
-from multidb.middleware import MultiDbMiddleware
-from singleschema.middleware import SingleSchemaMiddleware
 from ...factories import AccountFactory
 from ...factories import UserFactory
 from ...factories import ProjectFactory
@@ -127,8 +125,10 @@ class Command(BaseCommand):
 
         if "multidb" in settings.INSTALLED_APPS:
             assert accounts <= settings.MULTIDB_COUNT
+            from multidb.middleware import MultiDbMiddleware
             account_context = MultiDbMiddleware.use_current_tenancy_slug
         elif "singleschema":
+            from singleschema.middleware import SingleSchemaMiddleware
             account_context = SingleSchemaMiddleware.use_current_tenancy_slug
         else:
             raise RuntimeError("Unrecognised configuration")
