@@ -126,7 +126,7 @@ class TenantedQuerySet(QuerySet):
 
 
 class TenantedManager(Manager):
-    _queryset_class: QuerySet = TenantedQuerySet
+    _queryset_class: type[QuerySet] = TenantedQuerySet
     _require_tenant: bool
 
     def __init__(self, *args, require_tenant: bool = True, **kwargs):
