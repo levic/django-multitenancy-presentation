@@ -16,7 +16,7 @@ You can now view the presentation at http://localhost:8000/
 
 ## Code Samples
 
-Code samples are in `examples`
+Code samples are in [`examples`](examples)
 
 There are two strategies demonstrated:
 - single app server + multiple databases
@@ -28,7 +28,7 @@ Create the file `examples/env` with the following entries (fill in values as app
 ```ini
 
 #export DJANGO_CONFIGURATION=MultipleDb
-#export PGDATABASE=tenancy_multipledb
+#export PGDATABASE=...
 #export MULTIDB_COUNT=5
 
 #export DJANGO_CONFIGURATION=SingleSchema
