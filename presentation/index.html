@@ -358,6 +358,7 @@
 						<aside class="notes">
 							[12-12min]
 							- these are the 3 that we're going to be talking about
+							- each can be adopted incrementally
 						</aside>
 
 					</section>
@@ -806,9 +807,9 @@
 					</section>
 
 					<aside class="notes">
-							The end. If you're interested I have code samples on github that cover
-							most of what I've talked about, it's pinned at the top of my github account
-						</aside>
+						The end. If you're interested I have code samples on github that cover
+						most of what I've talked about, it's pinned at the top of my github account
+					</aside>
 
 
 					<section class="left">
@@ -818,6 +819,26 @@
 				</section>
 
 				<!-- =============================================================== -->
+
+				<section>
+					<section class="left">
+						<h2>Bonus!</h2>
+						<ul>
+							<li class="fragment fade-in"><code>rules</code> is better than django.contrib.auth permissions system</li>
+							<li class="fragment fade-in">Why not MySQL?</li>
+							<li class="fragment fade-in">Why not lots of Views?</li>
+							<li class="fragment fade-in">Why not write to master database, read from tenancy replications?</li>
+						</ul>
+
+					<aside class="notes">
+						- record-level permissions, run code as part of doing a permission check<br/>
+						- mysql: no RLS, no schemas, no DDL transactions<br/>
+						- Views? You can't index non-materialised views, so lots of headaches. Materialised views need to be refreshed to be up to date &amp; no partial updates in postgres.<br/>
+						- replications: gets rid of issue with partial migrations. downside: possible to accidentally write to the wrong tenancy, may have to deal with replication delay<br/>
+					</aside>
+					</section>
+				</section>
+
 
 			</div>
 		</div>
