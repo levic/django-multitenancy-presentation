@@ -2,9 +2,11 @@
 
 A presentation given at PyCon AU 2023 on Friday August 18
 
+https://www.youtube.com/watch?v=j-bbaf6hCMo
+
 ## Presentation
 
-To view the presentation:
+To view the presentation slides:
 
 ```bash
 cd presentation
